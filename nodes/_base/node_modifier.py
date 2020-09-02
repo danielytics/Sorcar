@@ -25,5 +25,8 @@ class ScModifierNode(ScNode):
         self.prop_mod_name = bpy.context.object.modifiers[-1].name
     
     def post_execute(self):
-        bpy.ops.object.modifier_apply(apply_as='DATA', modifier=self.prop_mod_name)
+        if bpy.app.version >= (2, 90, 0):
+            bpy.ops.object.modifier_apply(modifier=self.prop_mod_name)
+        else:
+            bpy.ops.object.modifier_apply(apply_as='DATA', modifier=self.prop_mod_name)
         return {"Object": self.inputs["Object"].default_value}
